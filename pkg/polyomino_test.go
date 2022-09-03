@@ -426,6 +426,181 @@ func TestPolyomino_Trim(t *testing.T) {
 	}
 }
 
+// test trim polyomino function
+func TestPolyomino_TrimAlt_01(t *testing.T) {
+	p := Polyomino{
+		Order: 3,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, false, false},
+			{false, true, true},
+			{false, false, true},
+		},
+	}
+	pT := p.Trim()
+	if pT.Order != 3 {
+		t.Error("Trim failed")
+	}
+	if pT.M != 2 {
+		t.Error("Trim failed")
+	}
+	if pT.N != 2 {
+		t.Error("Trim failed")
+	}
+	if !isSamePolyomino(pT, Polyomino{
+		Order: 3,
+		M:     2,
+		N:     2,
+		Shape: [][]bool{
+			{true, true},
+			{false, true},
+		},
+	}) {
+		t.Error("Trim failed")
+	}
+}
+
+// test trim polyomino function
+func TestPolyomino_TrimAlt_02(t *testing.T) {
+	p := Polyomino{
+		Order: 3,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, false, false},
+			{true, true, true},
+			{false, false, false},
+		},
+	}
+	pT := p.Trim()
+	if pT.Order != 3 {
+		t.Error("Trim failed")
+	}
+	if pT.M != 1 {
+		t.Error("Trim failed")
+	}
+	if pT.N != 3 {
+		t.Error("Trim failed")
+	}
+	if !isSamePolyomino(pT, Polyomino{
+		Order: 3,
+		M:     1,
+		N:     3,
+		Shape: [][]bool{
+			{true, true, true},
+		},
+	}) {
+		t.Error("Trim failed")
+	}
+}
+
+// test trim polyomino function
+func TestPolyomino_TrimAlt_03(t *testing.T) {
+	p := Polyomino{
+		Order: 3,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, true, false},
+			{false, true, false},
+			{false, true, false},
+		},
+	}
+	pT := p.Trim()
+	if pT.Order != 3 {
+		t.Error("Trim failed")
+	}
+	if pT.M != 3 {
+		t.Error("Trim failed")
+	}
+	if pT.N != 1 {
+		t.Error("Trim failed")
+	}
+	if !isSamePolyomino(pT, Polyomino{
+		Order: 3,
+		M:     3,
+		N:     1,
+		Shape: [][]bool{
+			{true},
+			{true},
+			{true},
+		},
+	}) {
+		t.Error("Trim failed")
+	}
+}
+
+// test trim polyomino function
+func TestPolyomino_TrimAlt_04(t *testing.T) {
+	p := Polyomino{
+		Order: 3,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, true, false},
+			{true, true, true},
+			{false, true, false},
+		},
+	}
+	pT := p.Trim()
+	if pT.Order != 3 {
+		t.Error("Trim failed")
+	}
+	if pT.M != 3 {
+		t.Error("Trim failed")
+	}
+	if pT.N != 3 {
+		t.Error("Trim failed")
+	}
+	if !isSamePolyomino(pT, Polyomino{
+		Order: 3,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, true, false},
+			{true, true, true},
+			{false, true, false},
+		},
+	}) {
+		t.Error("Trim failed")
+	}
+}
+
+// test trim polyomino function
+func TestPolyomino_TrimAlt_05(t *testing.T) {
+	p := Polyomino{
+		Order: 1,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, false, false},
+			{false, true, false},
+			{false, false, false},
+		},
+	}
+	pT := p.Trim()
+	if pT.Order != 1 {
+		t.Error("Trim failed")
+	}
+	if pT.M != 1 {
+		t.Error("Trim failed")
+	}
+	if pT.N != 1 {
+		t.Error("Trim failed")
+	}
+	if !isSamePolyomino(pT, Polyomino{
+		Order: 1,
+		M:     1,
+		N:     1,
+		Shape: [][]bool{
+			{true},
+		},
+	}) {
+		t.Error("Trim failed")
+	}
+}
+
 // test the CalculateMN function
 func TestPolyomino_CalculateMN(t *testing.T) {
 	p := Polyomino{

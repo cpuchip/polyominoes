@@ -107,7 +107,7 @@ func (p *Polyomino) CalculateMN() {
 // Remove duplicate Polyominoes from a list of Polyominoes.
 // The returned polyominoes should be unqueue to remove any duplicate polyominoes.
 //
-//	A duplicate polyomino is a polyomino that is the same as another polyomino when rotated or flipped.
+//	A duplicate polyomino is a polyomino that is the same as another polyomino when rotated, flipped or reflected.
 func RemoveDuplicates(polyominoes []Polyomino) []Polyomino {
 	var uniquePolyominoes []Polyomino
 	for _, polyomino := range polyominoes {
@@ -128,13 +128,13 @@ func RemoveDuplicates(polyominoes []Polyomino) []Polyomino {
 // Print out a representation of a polyomino.
 func (p Polyomino) String() string {
 	var s string
-	fmt.Printf("An %d ordered polyomino of Width %d and Length %d:\n", p.Order, len(p.Shape[0]), len(p.Shape))
+	fmt.Printf("An %d ordered polyomino of Width %d and Length %d:\n", p.Order, p.M, p.N)
 	for _, row := range p.Shape {
 		for _, square := range row {
 			if square {
-				s += "X"
+				s += "1"
 			} else {
-				s += " "
+				s += "0"
 			}
 		}
 		s += "\n"
@@ -171,7 +171,7 @@ func (p Polyomino) VerticalFlip() Polyomino {
 	return flippedPolyomino
 }
 
-// take the current polyomino and take the D+ rotation of it.
+// take the current polyomino and take the D+ Reflection of it.
 func (p Polyomino) DPlusReflection() Polyomino {
 	var reflectedPolyomino Polyomino
 	reflectedPolyomino.Order = p.Order
@@ -190,6 +190,7 @@ func (p Polyomino) DPlusReflection() Polyomino {
 }
 
 // take the current polyomino and generate all of its transformations.
+// This is used to check for duplicate polyominoes
 func (p Polyomino) Transformations() []Polyomino {
 	p.Transforms = nil
 	p.Transforms = make([]Polyomino, 0, 7)
@@ -224,6 +225,7 @@ func (p Polyomino) Transformations() []Polyomino {
 }
 
 // Expand the polyomino by one row and column in each direction.
+// This is used to generate the next order of polyominoes.
 func (p Polyomino) ExpandOrder() Polyomino {
 	var expandedPolyomino Polyomino
 	expandedPolyomino.Order = p.Order + 1
@@ -242,6 +244,7 @@ func (p Polyomino) ExpandOrder() Polyomino {
 }
 
 // trim the polyomino so it has no rows or columns of all false squares on its sides.
+// This is used after an expansion to remove the extra rows and columns that are not needed for the new order
 func (p Polyomino) Trim() Polyomino {
 	var trimmedPolyomino Polyomino
 	trimmedPolyomino.Order = p.Order
