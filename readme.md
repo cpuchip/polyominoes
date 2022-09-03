@@ -1,7 +1,8 @@
 # Free Polyomino (A000105) generator
 
 A polyomino is a simple shape made of squares connected on their edges, think of Tetris shapes. The order of a polyomino refers to how many squares make up the shape. for example Order 3 contains 3 sqares. There are only two free members of Order 3, a bar with 3 squares in a row, and an L.
-![Alt text](Polyominoes_1300.svg "example of order 1 through 5 free polyominoes") Credit https://mathworld.wolfram.com/Polyomino.html 
+![Alt text](Polyominoes_1300.svg "example of order 1 through 5 free polyominoes") 
+Credit https://mathworld.wolfram.com/Polyomino.html 
 
 This repo is where the work I'm doing on porting some C# code, which I wrote back in 2007 for a Math research project on generating polyominoes while I was a physics undergrad, to Golang.
 
