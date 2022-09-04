@@ -84,18 +84,39 @@ type Polyomino struct {
 //
 
 // see if two polyominoes are the same
-func isSamePolyomino(p1, p2 Polyomino) bool {
-	if p1.Order != p2.Order {
+func isSamePolyomino(p1, p2 [][]bool) bool {
+	if len(p1) != len(p2) {
 		return false
 	}
-	for i, row := range p1.Shape {
-		for j, square := range row {
-			if square != p2.Shape[i][j] {
+	if len(p1[0]) != len(p2[0]) {
+		return false
+	}
+	for i := 0; i < len(p1); i++ {
+		for j := 0; j < len(p1[0]); j++ {
+			if p1[i][j] != p2[i][j] {
 				return false
 			}
 		}
 	}
 	return true
+}
+
+// see if two polyominoes are the same
+func (p *Polyomino) IsSame(p2 *Polyomino) bool {
+	if p.Order != p2.Order {
+		return false
+	}
+	// check p if p2 primary shape
+	if isSamePolyomino(p.Shape, p2.Shape) {
+		return true
+	}
+	// check if p is the same of any of p2's transforms
+	for _, transform := range p2.Transforms {
+		if isSamePolyomino(p.Shape, transform.Shape) {
+			return true
+		}
+	}
+	return false
 }
 
 // calculate the M and N of a polyomino
@@ -113,7 +134,7 @@ func RemoveDuplicates(polyominoes []Polyomino) []Polyomino {
 	for _, polyomino := range polyominoes {
 		found := false
 		for _, uniquePolyomino := range uniquePolyominoes {
-			if polyomino.Order == uniquePolyomino.Order && isSamePolyomino(polyomino, uniquePolyomino) {
+			if polyomino.IsSame(&uniquePolyomino) {
 				found = true
 				break
 			}
@@ -126,7 +147,7 @@ func RemoveDuplicates(polyominoes []Polyomino) []Polyomino {
 }
 
 // Print out a representation of a polyomino.
-func (p Polyomino) String() string {
+func (p *Polyomino) String() string {
 	var s string
 	fmt.Printf("An %d ordered polyomino of Width %d and Length %d:\n", p.Order, p.M, p.N)
 	for _, row := range p.Shape {
@@ -143,7 +164,7 @@ func (p Polyomino) String() string {
 }
 
 // take the current polyomino and horizontally flip it.
-func (p Polyomino) HorizontalFlip() Polyomino {
+func (p *Polyomino) HorizontalFlip() Polyomino {
 	var flippedPolyomino Polyomino
 	flippedPolyomino.Order = p.Order
 	flippedPolyomino.M = p.M
@@ -160,7 +181,7 @@ func (p Polyomino) HorizontalFlip() Polyomino {
 }
 
 // take the current polyomino and vertically flip it.
-func (p Polyomino) VerticalFlip() Polyomino {
+func (p *Polyomino) VerticalFlip() Polyomino {
 	var flippedPolyomino Polyomino
 	flippedPolyomino.Order = p.Order
 	flippedPolyomino.M = p.M
@@ -172,7 +193,7 @@ func (p Polyomino) VerticalFlip() Polyomino {
 }
 
 // take the current polyomino and take the D+ Reflection of it.
-func (p Polyomino) DPlusReflection() Polyomino {
+func (p *Polyomino) DPlusReflection() Polyomino {
 	var reflectedPolyomino Polyomino
 	reflectedPolyomino.Order = p.Order
 	reflectedPolyomino.M = p.N
@@ -191,7 +212,7 @@ func (p Polyomino) DPlusReflection() Polyomino {
 
 // take the current polyomino and generate all of its transformations.
 // This is used to check for duplicate polyominoes
-func (p Polyomino) Transformations() []Polyomino {
+func (p *Polyomino) Transformations() []Polyomino {
 	p.Transforms = nil
 	p.Transforms = make([]Polyomino, 0, 7)
 	// Sraight ( no transformation )
@@ -226,7 +247,7 @@ func (p Polyomino) Transformations() []Polyomino {
 
 // Expand the polyomino by one row and column in each direction.
 // This is used to generate the next order of polyominoes.
-func (p Polyomino) ExpandOrder() Polyomino {
+func (p *Polyomino) ExpandOrder() Polyomino {
 	var expandedPolyomino Polyomino
 	expandedPolyomino.Order = p.Order + 1
 	expandedPolyomino.M = p.M + 2
@@ -245,7 +266,7 @@ func (p Polyomino) ExpandOrder() Polyomino {
 
 // trim the polyomino so it has no rows or columns of all false squares on its sides.
 // This is used after an expansion to remove the extra rows and columns that are not needed for the new order
-func (p Polyomino) Trim() Polyomino {
+func (p *Polyomino) Trim() Polyomino {
 	var trimmedPolyomino Polyomino
 	trimmedPolyomino.Order = p.Order
 	trimmedPolyomino.M = p.M
@@ -316,7 +337,7 @@ func (p Polyomino) Trim() Polyomino {
 }
 
 // Check if a m, n location is a valid spot for a square
-func (p Polyomino) ValidSquare(m, n int) bool {
+func (p *Polyomino) ValidSquare(m, n int) bool {
 	if m < 0 || m >= p.M || n < 0 || n >= p.N {
 		return false
 	}

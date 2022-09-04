@@ -5,7 +5,7 @@ import "testing"
 // test horizontal flip
 func TestPolyomino_HorizontalFlip(t *testing.T) {
 	p := Polyomino{
-		Order: 2,
+		Order: 3,
 		M:     2,
 		N:     2,
 		Shape: [][]bool{
@@ -21,9 +21,9 @@ func TestPolyomino_HorizontalFlip(t *testing.T) {
 
 func TestPolyomino_HorizontalFlipLarger(t *testing.T) {
 	p := Polyomino{
-		Order: 3,
-		M:     2,
-		N:     3,
+		Order: 4,
+		M:     3,
+		N:     2,
 		Shape: [][]bool{
 			{true, true},
 			{false, true},
@@ -44,7 +44,7 @@ func TestPolyomino_HorizontalFlipLarger(t *testing.T) {
 // test check if two polyominoes are the same
 func TestPolyomino_IsSamePolyomino(t *testing.T) {
 	p1 := Polyomino{
-		Order: 2,
+		Order: 3,
 		M:     2,
 		N:     2,
 		Shape: [][]bool{
@@ -53,7 +53,7 @@ func TestPolyomino_IsSamePolyomino(t *testing.T) {
 		},
 	}
 	p2 := Polyomino{
-		Order: 2,
+		Order: 3,
 		M:     2,
 		N:     2,
 		Shape: [][]bool{
@@ -61,7 +61,7 @@ func TestPolyomino_IsSamePolyomino(t *testing.T) {
 			{false, true},
 		},
 	}
-	if !isSamePolyomino(p1, p2) {
+	if !isSamePolyomino(p1.Shape, p2.Shape) {
 		t.Error("isSamePolyomino failed")
 	}
 }
@@ -69,7 +69,7 @@ func TestPolyomino_IsSamePolyomino(t *testing.T) {
 // test if two polyominos are not the same
 func TestPolyomino_NotSamePolyomino(t *testing.T) {
 	p1 := Polyomino{
-		Order: 2,
+		Order: 3,
 		M:     2,
 		N:     2,
 		Shape: [][]bool{
@@ -78,7 +78,7 @@ func TestPolyomino_NotSamePolyomino(t *testing.T) {
 		},
 	}
 	p2 := Polyomino{
-		Order: 2,
+		Order: 4,
 		M:     2,
 		N:     2,
 		Shape: [][]bool{
@@ -86,7 +86,7 @@ func TestPolyomino_NotSamePolyomino(t *testing.T) {
 			{true, true},
 		},
 	}
-	if isSamePolyomino(p1, p2) {
+	if isSamePolyomino(p1.Shape, p2.Shape) {
 		t.Error("isSamePolyomino failed")
 	}
 }
@@ -94,8 +94,8 @@ func TestPolyomino_NotSamePolyomino(t *testing.T) {
 func TestPolyomino_IsSamePolyominoLarger(t *testing.T) {
 	p1 := Polyomino{
 		Order: 3,
-		M:     2,
-		N:     3,
+		M:     3,
+		N:     2,
 		Shape: [][]bool{
 			{true, true},
 			{false, true},
@@ -104,15 +104,95 @@ func TestPolyomino_IsSamePolyominoLarger(t *testing.T) {
 	}
 	p2 := Polyomino{
 		Order: 3,
-		M:     2,
-		N:     3,
+		M:     3,
+		N:     2,
 		Shape: [][]bool{
 			{true, true},
 			{false, true},
 			{false, true},
 		},
 	}
-	if !isSamePolyomino(p1, p2) {
+	if !isSamePolyomino(p1.Shape, p2.Shape) {
+		t.Error("isSamePolyomino failed")
+	}
+}
+
+// test check if two polyominoes are the same
+func TestPolyomino_IsSame(t *testing.T) {
+	p1 := Polyomino{
+		Order: 3,
+		M:     2,
+		N:     2,
+		Shape: [][]bool{
+			{true, true},
+			{false, true},
+		},
+	}
+	p1.Transformations()
+	p2 := Polyomino{
+		Order: 3,
+		M:     2,
+		N:     2,
+		Shape: [][]bool{
+			{true, true},
+			{false, true},
+		},
+	}
+	p2.Transformations()
+	if !p1.IsSame(&p2) {
+		t.Error("isSamePolyomino failed")
+	}
+}
+
+// test check if two polyominoes are the same
+func TestPolyomino_IsSame_alt01(t *testing.T) {
+	p1 := Polyomino{
+		Order: 3,
+		M:     2,
+		N:     2,
+		Shape: [][]bool{
+			{true, false},
+			{true, true},
+		},
+	}
+	p1.Transformations()
+	p2 := Polyomino{
+		Order: 3,
+		M:     2,
+		N:     2,
+		Shape: [][]bool{
+			{true, true},
+			{false, true},
+		},
+	}
+	p2.Transformations()
+	if !p1.IsSame(&p2) {
+		t.Error("isSamePolyomino failed")
+	}
+}
+
+// test check if two polyominoes are the same
+func TestPolyomino_IsSame_alt02(t *testing.T) {
+	p1 := Polyomino{
+		Order: 3,
+		M:     1,
+		N:     3,
+		Shape: [][]bool{
+			{true, true, true},
+		},
+	}
+	p1.Transformations()
+	p2 := Polyomino{
+		Order: 3,
+		M:     2,
+		N:     2,
+		Shape: [][]bool{
+			{true, true},
+			{false, true},
+		},
+	}
+	p2.Transformations()
+	if p1.IsSame(&p2) {
 		t.Error("isSamePolyomino failed")
 	}
 }
@@ -203,7 +283,7 @@ func TestPolyomino_TransformationsLarge(t *testing.T) {
 			{true, false},
 		},
 	}
-	if !isSamePolyomino(pUT[0], h) {
+	if !isSamePolyomino(pUT[0].Shape, h.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// 180 degree
@@ -217,7 +297,7 @@ func TestPolyomino_TransformationsLarge(t *testing.T) {
 			{true, true},
 		},
 	}
-	if !isSamePolyomino(pUT[1], r180) {
+	if !isSamePolyomino(pUT[1].Shape, r180.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// VerticalFlip
@@ -231,7 +311,7 @@ func TestPolyomino_TransformationsLarge(t *testing.T) {
 			{true, true},
 		},
 	}
-	if !isSamePolyomino(pUT[2], v) {
+	if !isSamePolyomino(pUT[2].Shape, v.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 }
@@ -264,7 +344,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{false, false, true},
 		},
 	}
-	if !isSamePolyomino(pUT[0], h) {
+	if !isSamePolyomino(pUT[0].Shape, h.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// 180 degree
@@ -278,7 +358,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{true, true, true},
 		},
 	}
-	if !isSamePolyomino(pUT[1], r180) {
+	if !isSamePolyomino(pUT[1].Shape, r180.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// VerticalFlip
@@ -292,7 +372,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{true, true, true},
 		},
 	}
-	if !isSamePolyomino(pUT[2], v) {
+	if !isSamePolyomino(pUT[2].Shape, v.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// 270 degree
@@ -306,7 +386,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{false, false, true},
 		},
 	}
-	if !isSamePolyomino(pUT[3], r270) {
+	if !isSamePolyomino(pUT[3].Shape, r270.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// D- reflection
@@ -320,7 +400,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{true, false, false},
 		},
 	}
-	if !isSamePolyomino(pUT[4], dMinus) {
+	if !isSamePolyomino(pUT[4].Shape, dMinus.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// 90 degree
@@ -334,7 +414,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{true, true, true},
 		},
 	}
-	if !isSamePolyomino(pUT[5], r90) {
+	if !isSamePolyomino(pUT[5].Shape, r90.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 	// D+ reflection
@@ -348,7 +428,7 @@ func TestPolyomino_TransformationsSquare(t *testing.T) {
 			{true, true, true},
 		},
 	}
-	if !isSamePolyomino(pUT[6], dPlus) {
+	if !isSamePolyomino(pUT[6].Shape, dPlus.Shape) {
 		t.Error("HorizontalFlip failed")
 	}
 }
@@ -375,7 +455,7 @@ func TestPolyomino_ExpandOrder(t *testing.T) {
 	if pEO.N != 5 {
 		t.Error("ExpandOrder failed")
 	}
-	if !isSamePolyomino(pEO, Polyomino{
+	p2 := Polyomino{
 		Order: 4,
 		M:     5,
 		N:     5,
@@ -386,7 +466,8 @@ func TestPolyomino_ExpandOrder(t *testing.T) {
 			{false, true, false, false, false},
 			{false, false, false, false, false},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pEO.Shape, p2.Shape) {
 		t.Error("ExpandOrder failed")
 	}
 }
@@ -413,7 +494,7 @@ func TestPolyomino_Trim(t *testing.T) {
 	if pT.N != 2 {
 		t.Error("Trim failed")
 	}
-	if !isSamePolyomino(pT, Polyomino{
+	p2 := Polyomino{
 		Order: 3,
 		M:     2,
 		N:     2,
@@ -421,7 +502,8 @@ func TestPolyomino_Trim(t *testing.T) {
 			{true, true},
 			{true, false},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pT.Shape, p2.Shape) {
 		t.Error("Trim failed")
 	}
 }
@@ -448,7 +530,7 @@ func TestPolyomino_TrimAlt_01(t *testing.T) {
 	if pT.N != 2 {
 		t.Error("Trim failed")
 	}
-	if !isSamePolyomino(pT, Polyomino{
+	p2 := Polyomino{
 		Order: 3,
 		M:     2,
 		N:     2,
@@ -456,7 +538,8 @@ func TestPolyomino_TrimAlt_01(t *testing.T) {
 			{true, true},
 			{false, true},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pT.Shape, p2.Shape) {
 		t.Error("Trim failed")
 	}
 }
@@ -483,14 +566,15 @@ func TestPolyomino_TrimAlt_02(t *testing.T) {
 	if pT.N != 3 {
 		t.Error("Trim failed")
 	}
-	if !isSamePolyomino(pT, Polyomino{
+	p2 := Polyomino{
 		Order: 3,
 		M:     1,
 		N:     3,
 		Shape: [][]bool{
 			{true, true, true},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pT.Shape, p2.Shape) {
 		t.Error("Trim failed")
 	}
 }
@@ -517,7 +601,7 @@ func TestPolyomino_TrimAlt_03(t *testing.T) {
 	if pT.N != 1 {
 		t.Error("Trim failed")
 	}
-	if !isSamePolyomino(pT, Polyomino{
+	p2 := Polyomino{
 		Order: 3,
 		M:     3,
 		N:     1,
@@ -526,7 +610,8 @@ func TestPolyomino_TrimAlt_03(t *testing.T) {
 			{true},
 			{true},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pT.Shape, p2.Shape) {
 		t.Error("Trim failed")
 	}
 }
@@ -553,7 +638,7 @@ func TestPolyomino_TrimAlt_04(t *testing.T) {
 	if pT.N != 3 {
 		t.Error("Trim failed")
 	}
-	if !isSamePolyomino(pT, Polyomino{
+	p2 := Polyomino{
 		Order: 3,
 		M:     3,
 		N:     3,
@@ -562,7 +647,8 @@ func TestPolyomino_TrimAlt_04(t *testing.T) {
 			{true, true, true},
 			{false, true, false},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pT.Shape, p2.Shape) {
 		t.Error("Trim failed")
 	}
 }
@@ -589,14 +675,15 @@ func TestPolyomino_TrimAlt_05(t *testing.T) {
 	if pT.N != 1 {
 		t.Error("Trim failed")
 	}
-	if !isSamePolyomino(pT, Polyomino{
+	p2 := Polyomino{
 		Order: 1,
 		M:     1,
 		N:     1,
 		Shape: [][]bool{
 			{true},
 		},
-	}) {
+	}
+	if !isSamePolyomino(pT.Shape, p2.Shape) {
 		t.Error("Trim failed")
 	}
 }
@@ -786,4 +873,3 @@ func TestPolyomino_ValidSquare_04(t *testing.T) {
 		t.Error("ValidSquare failed")
 	}
 }
-
