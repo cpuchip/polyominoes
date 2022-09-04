@@ -314,3 +314,32 @@ func (p Polyomino) Trim() Polyomino {
 
 	return trimmedPolyomino
 }
+
+// Check if a m, n location is a valid spot for a square
+func (p Polyomino) ValidSquare(m, n int) bool {
+	if m < 0 || m >= p.M || n < 0 || n >= p.N {
+		return false
+	}
+	// check if the square is already occupied
+	if p.Shape[m][n] {
+		return false
+	}
+	// check if the square is adjacent to another square
+	// check the top
+	if m > 0 && p.Shape[m-1][n] {
+		return true
+	}
+	// check the bottom
+	if m < p.M-1 && p.Shape[m+1][n] {
+		return true
+	}
+	// check the left
+	if n > 0 && p.Shape[m][n-1] {
+		return true
+	}
+	// check the right
+	if n < p.N-1 && p.Shape[m][n+1] {
+		return true
+	}
+	return false
+}

@@ -619,3 +619,171 @@ func TestPolyomino_CalculateMN(t *testing.T) {
 		t.Error("CalculateMN failed")
 	}
 }
+
+// test the ValidSquare function with a valid square
+func TestPolyomino_ValidSquare_01(t *testing.T) {
+	p := Polyomino{
+		Order: 3,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, false, false},
+			{true, true, false},
+			{false, true, false},
+		},
+	}
+	if !p.ValidSquare(0, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(0, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(0, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(1, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(1, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(1, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(2, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(2, 2) {
+		t.Error("ValidSquare failed")
+	}
+}
+
+// test the ValidSquare function with a valid square
+func TestPolyomino_ValidSquare_02(t *testing.T) {
+	p := Polyomino{
+		Order: 2,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, false, false},
+			{false, true, false},
+			{false, true, false},
+		},
+	}
+	// must be false
+	if p.ValidSquare(0, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(0, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(1, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 1) {
+		t.Error("ValidSquare failed")
+	}
+	// must be true
+	if !p.ValidSquare(0, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(1, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(1, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(2, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(2, 2) {
+		t.Error("ValidSquare failed")
+	}
+}
+
+// test the ValidSquare function with a valid square
+func TestPolyomino_ValidSquare_03(t *testing.T) {
+	p := Polyomino{
+		Order: 2,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{false, false, false},
+			{false, true, false},
+			{false, false, false},
+		},
+	}
+	// must be false
+	if p.ValidSquare(0, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(0, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 2) {
+		t.Error("ValidSquare failed")
+	}
+	// must be true
+	if !p.ValidSquare(0, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(1, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(1, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if !p.ValidSquare(2, 1) {
+		t.Error("ValidSquare failed")
+	}
+}
+
+// test the ValidSquare function with a valid square
+func TestPolyomino_ValidSquare_04(t *testing.T) {
+	p := Polyomino{
+		Order: 8,
+		M:     3,
+		N:     3,
+		Shape: [][]bool{
+			{true, true, true},
+			{true, false, true},
+			{true, true, true},
+		},
+	}
+	// must be false
+	if p.ValidSquare(0, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(0, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(0, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(1, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(1, 2) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 0) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 1) {
+		t.Error("ValidSquare failed")
+	}
+	if p.ValidSquare(2, 2) {
+		t.Error("ValidSquare failed")
+	}
+	// must be true
+	if !p.ValidSquare(1, 1) {
+		t.Error("ValidSquare failed")
+	}
+}
+
